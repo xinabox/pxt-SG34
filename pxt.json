@@ -1,0 +1,31 @@
+{
+    "name": "pxt-SG34",
+    "version": "0.0.0",
+    "description": "Heartbeat sensot",
+    "license": "MIT",
+    "dependencies": {
+        "core": "*",
+        "radio": "*"
+    },
+    "files": [
+        "README.md",
+        "main.blocks",
+        "shims.d.ts",
+        "enums.d.ts",
+        "sg34.ts",
+        "heartRate.h",
+        "heartRate.cpp",
+        "spo2_algorithm.h",
+        "spo2_algorithm.cpp",
+        "MAX30105.h",
+        "MAX30105.cpp"
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "public": true,
+    "supportedTargets": [
+        "microbit"
+    ],
+    "preferredEditor": "blocksprj"
+}
