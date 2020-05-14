@@ -9,6 +9,11 @@
  BSD license, all text above must be included in any redistribution.
  *****************************************************/
 
+#pragma once
+#ifdef CODAL_I2C
+#include "Pin.h"
+#include "I2C.h"
+#endif
 #include "pxt.h"
 #include "inttypes.h"
 

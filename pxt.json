@@ -4,8 +4,7 @@
     "description": "Heartbeat sensot",
     "license": "MIT",
     "dependencies": {
-        "core": "*",
-        "radio": "*"
+        "xinabox-cs11": "*"
     },
     "files": [
         "README.md",

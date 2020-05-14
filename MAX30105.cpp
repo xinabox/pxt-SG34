@@ -644,7 +644,17 @@ uint16_t MAX30105::check(void)
 	uint8_t command[1];
 	command[0] = MAX30105_FIFODATA;
 	
+	#ifdef CODAL_I2C
+    auto sda = LOOKUP_PIN(SDA);
+    auto scl = LOOKUP_PIN(SCL);
+    codal::I2C *i2c = pxt::getI2C(sda, scl);
+	#endif
+	
+	#ifdef CODAL_I2C
+	i2c->write((uint16_t)MAX30105_ADDRESS << 1, (uint8_t *)command, 1, false);
+	#else
 	uBit.i2c.write(MAX30105_ADDRESS << 1, (const char*) command, 1, false);
+	#endif
 
     //We may need to read as many as 288 bytes so we read in blocks no larger than I2C_BUFFER_LENGTH
     //I2C_BUFFER_LENGTH changes based on the platform. 64 bytes for SAMD21, 32 bytes for Uno.
@@ -675,7 +685,11 @@ uint16_t MAX30105::check(void)
         byte temp[sizeof(uint32_t)]; //Array of 4 bytes that we will convert into long
         uint32_t tempLong;
 		
+		#ifdef CODAL_I2C
+		i2c->read((uint16_t)MAX30105_ADDRESS << 1, (uint8_t *)value, activeLEDs * 3);
+		#else
 		uBit.i2c.read(MAX30105_ADDRESS << 1,(char * )value, activeLEDs * 3);
+		#endif
 
         //Burst read three bytes - RED
         temp[3] = 0;
@@ -772,26 +786,47 @@ void MAX30105::delay(int ms)
 // Low-level I2C Communication
 //
 char MAX30105::readRegister8(uint8_t address, uint8_t reg) {
+	
+	#ifdef CODAL_I2C
+    auto sda = LOOKUP_PIN(SDA);
+    auto scl = LOOKUP_PIN(SCL);
+    codal::I2C *i2c = pxt::getI2C(sda, scl);
+	#endif
 
   uint8_t command[1];
   command[0] = reg;
   
   char value[1];
   
+  #ifdef CODAL_I2C
+  i2c->write((uint16_t)address << 1, (uint8_t *)command, 1, false);
+  i2c->read((uint16_t)address << 1, (uint8_t *)value, 1);
+  #else
   uBit.i2c.write(address << 1, (const char*)command, 1, false);
   uBit.i2c.read(address << 1, (char*)value, 1);
+  #endif
   
   return value[0];
 
 }
 
 void MAX30105::writeRegister8(uint8_t address, uint8_t reg, uint8_t value) {
+	
+	#ifdef CODAL_I2C
+    auto sda = LOOKUP_PIN(SDA);
+    auto scl = LOOKUP_PIN(SCL);
+    codal::I2C *i2c = pxt::getI2C(sda, scl);
+	#endif
   
   uint8_t command[2];
   command[0] = reg;
   command[1] = value;
   
+  #ifdef CODAL_I2C
+  i2c->write((uint16_t)address << 1, (uint8_t *)command, 2, false);
+  #else
   uBit.i2c.write(address << 1, (const char*)command, 2, false);
+  #endif
 }
 
 namespace max30105{
