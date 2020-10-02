@@ -11,6 +11,13 @@
 
 #include "MAX30105.h"
 
+#if MICROBIT_CODAL
+#define BUFFER_TYPE uint8_t*
+#else
+#define BUFFER_TYPE char*
+#endif
+
+
 // Status Registers
 static const uint8_t MAX30105_INTSTAT1 =		0x00;
 static const uint8_t MAX30105_INTSTAT2 =		0x01;
@@ -654,7 +661,7 @@ uint16_t MAX30105::check(void)
 	i2c->write((uint16_t)MAX30105_ADDRESS << 1, (uint8_t *)command, 1, false);
 	#else
 	const char command_ubit[1] = {MAX30105_FIFODATA};
-	uBit.i2c.write(MAX30105_ADDRESS << 1, command_ubit, 1, false);
+	uBit.i2c.write(MAX30105_ADDRESS << 1, (BUFFER_TYPE)command_ubit, 1, false);
 	#endif
 
     //We may need to read as many as 288 bytes so we read in blocks no larger than I2C_BUFFER_LENGTH
@@ -689,7 +696,7 @@ uint16_t MAX30105::check(void)
 		#ifdef CODAL_I2C
 		i2c->read((uint16_t)MAX30105_ADDRESS << 1, (uint8_t *)value, activeLEDs * 3);
 		#else
-		uBit.i2c.read(MAX30105_ADDRESS << 1, value, activeLEDs * 3);
+		uBit.i2c.read(MAX30105_ADDRESS << 1, (BUFFER_TYPE)value, activeLEDs * 3);
 		#endif
 
         //Burst read three bytes - RED
@@ -804,8 +811,8 @@ char MAX30105::readRegister8(uint8_t address, uint8_t reg) {
   i2c->read((uint16_t)address << 1, (uint8_t *)value, 1);
   #else
    const char command_ubit[1] = {reg};
-  uBit.i2c.write(address << 1, command_ubit, 1, false);
-  uBit.i2c.read(address << 1, value, 1);
+  uBit.i2c.write(address << 1, (BUFFER_TYPE)command_ubit, 1, false);
+  uBit.i2c.read(address << 1, (BUFFER_TYPE)value, 1);
   #endif
   
   return value[0];
@@ -828,7 +835,7 @@ void MAX30105::writeRegister8(uint8_t address, uint8_t reg, uint8_t value) {
   i2c->write((uint16_t)address << 1, (uint8_t *)command, 2, false);
   #else
   const char command_ubit[2] = {reg, value};
-  uBit.i2c.write(address << 1, command_ubit, 2, false);
+  uBit.i2c.write(address << 1, (BUFFER_TYPE)command_ubit, 2, false);
   #endif
 }
 
