@@ -653,7 +653,8 @@ uint16_t MAX30105::check(void)
 	#ifdef CODAL_I2C
 	i2c->write((uint16_t)MAX30105_ADDRESS << 1, (uint8_t *)command, 1, false);
 	#else
-	uBit.i2c.write(MAX30105_ADDRESS << 1, command, 1, false);
+	const char command_ubit[1] = {MAX30105_FIFODATA};
+	uBit.i2c.write(MAX30105_ADDRESS << 1, command_ubit, 1, false);
 	#endif
 
     //We may need to read as many as 288 bytes so we read in blocks no larger than I2C_BUFFER_LENGTH
@@ -802,7 +803,8 @@ char MAX30105::readRegister8(uint8_t address, uint8_t reg) {
   i2c->write((uint16_t)address << 1, (uint8_t *)command, 1, false);
   i2c->read((uint16_t)address << 1, (uint8_t *)value, 1);
   #else
-  uBit.i2c.write(address << 1, command, 1, false);
+   const char command_ubit[1] = {reg};
+  uBit.i2c.write(address << 1, command_ubit, 1, false);
   uBit.i2c.read(address << 1, value, 1);
   #endif
   
@@ -825,7 +827,8 @@ void MAX30105::writeRegister8(uint8_t address, uint8_t reg, uint8_t value) {
   #ifdef CODAL_I2C
   i2c->write((uint16_t)address << 1, (uint8_t *)command, 2, false);
   #else
-  uBit.i2c.write(address << 1, command, 2, false);
+  const char command_ubit[2] = {reg, value};
+  uBit.i2c.write(address << 1, command_ubit, 2, false);
   #endif
 }
 
