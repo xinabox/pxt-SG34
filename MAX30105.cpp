@@ -653,7 +653,7 @@ uint16_t MAX30105::check(void)
 	#ifdef CODAL_I2C
 	i2c->write((uint16_t)MAX30105_ADDRESS << 1, (uint8_t *)command, 1, false);
 	#else
-	uBit.i2c.write(MAX30105_ADDRESS << 1, (const char*) command, 1, false);
+	uBit.i2c.write(MAX30105_ADDRESS << 1, (uint8_t *) command, 1, false);
 	#endif
 
     //We may need to read as many as 288 bytes so we read in blocks no larger than I2C_BUFFER_LENGTH
@@ -688,7 +688,7 @@ uint16_t MAX30105::check(void)
 		#ifdef CODAL_I2C
 		i2c->read((uint16_t)MAX30105_ADDRESS << 1, (uint8_t *)value, activeLEDs * 3);
 		#else
-		uBit.i2c.read(MAX30105_ADDRESS << 1,(char * )value, activeLEDs * 3);
+		uBit.i2c.read(MAX30105_ADDRESS << 1,(uint8_t *)value, activeLEDs * 3);
 		#endif
 
         //Burst read three bytes - RED
@@ -802,8 +802,8 @@ char MAX30105::readRegister8(uint8_t address, uint8_t reg) {
   i2c->write((uint16_t)address << 1, (uint8_t *)command, 1, false);
   i2c->read((uint16_t)address << 1, (uint8_t *)value, 1);
   #else
-  uBit.i2c.write(address << 1, (const char*)command, 1, false);
-  uBit.i2c.read(address << 1, (char*)value, 1);
+  uBit.i2c.write(address << 1, (uint8_t *)command, 1, false);
+  uBit.i2c.read(address << 1, (uint8_t *)value, 1);
   #endif
   
   return value[0];
@@ -825,7 +825,7 @@ void MAX30105::writeRegister8(uint8_t address, uint8_t reg, uint8_t value) {
   #ifdef CODAL_I2C
   i2c->write((uint16_t)address << 1, (uint8_t *)command, 2, false);
   #else
-  uBit.i2c.write(address << 1, (const char*)command, 2, false);
+  uBit.i2c.write(address << 1, (uint8_t *)command, 2, false);
   #endif
 }
 
