@@ -4,7 +4,8 @@
     "description": "Heartbeat sensot",
     "license": "MIT",
     "dependencies": {
-        "core": "*"
+        "core": "*",
+        "microphone": "*"
     },
     "files": [
         "README.md",
@@ -27,5 +28,8 @@
     "supportedTargets": [
         "microbit"
     ],
-    "preferredEditor": "tsprj"
+    "preferredEditor": "tsprj",
+    "disablesVariants": [
+        "mbcodal"
+    ]
 }
